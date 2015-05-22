@@ -1,5 +1,5 @@
 # PandocGUI
-This project provides a GUI for Pandoc by using JavaFX. It's a kind of prototype for me to learn JavaFX.
+This project provides a GUI for [Pandoc](https://github.com/jgm/pandoc) by using JavaFX. It's a kind of prototype for me to learn JavaFX.
 
 # Author
 Sebastian Hesse
