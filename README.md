@@ -15,6 +15,15 @@ Java, JavaFX, CSS, Maven
 5. Check generated command and click "Execute!" to execute the command.
 6. Be happy :)
 
+# TODO
+- Add options by mouse click, without typing them by yourself.
+- Allow to change ordering of input files
+- Don't allow duplicate input files
+- Print out Pandoc's output if available
+- Show generated command in popup window
+- Know the last viewed directory for all file dialogs
+- Open output file or directory after successful conversion
+
 # License
 The MIT License (MIT)
 
