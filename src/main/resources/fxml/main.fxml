@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane prefHeight="400.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="de.sebastianhesse.pandocgui.Controller">
+    <stylesheets>
+        <URL value="@/css/main.css" />
+    </stylesheets>
+
+    <padding>
+        <Insets bottom="10" left="25" right="25" top="25" />
+    </padding>
+
+    <center>
+        <GridPane>
+            <!-- Pandoc executable location -->
+            <Label text="Your Pandoc executable location: " GridPane.rowIndex="0" />
+            <HBox maxWidth="500" GridPane.rowIndex="1">
+                <TextField fx:id="pandocLocation" prefWidth="400" GridPane.columnIndex="0"/>
+                <Button onAction="#openPandocLocationFileDialog" text="Select" GridPane.columnIndex="1"/>
+            </HBox>
+
+            <!-- Output file location -->
+            <Label text="Your output file location: " GridPane.rowIndex="2" />
+            <HBox maxWidth="500" GridPane.rowIndex="3">
+                <TextField fx:id="outputFileLocation" prefWidth="400" GridPane.columnIndex="0"/>
+                <Button onAction="#openOutputFileLocationFileDialog" text="Select" GridPane.columnIndex="1" />
+            </HBox>
+
+            <!-- Pandoc command options -->
+            <Label text="Your Pandoc command options: " GridPane.rowIndex="4"/>
+            <TextArea fx:id="commandOptions" maxHeight="300" maxWidth="500" prefHeight="300" prefWidth="500"
+                      GridPane.rowIndex="5"/>
+
+            <!-- Input files -->
+            <Label text="Your input files to convert: " GridPane.rowIndex="6" />
+            <HBox maxWidth="500" GridPane.rowIndex="7">
+                <ListView fx:id="inputFiles" maxHeight="300" maxWidth="450" prefHeight="300" prefWidth="450"
+                          GridPane.columnIndex="0"/>
+                <Button fx:id="selectFiles" onAction="#openInputFilesDialog" text="Open Files..."
+                        GridPane.columnIndex="1" GridPane.valignment="BOTTOM" />
+            </HBox>
+
+            <!-- Generated command -->
+            <Label text="Your generated command: " GridPane.rowIndex="8" />
+            <TextArea fx:id="generatedCommand" GridPane.rowIndex="9" maxWidth="500" wrapText="true"/>
+        </GridPane>
+    </center>
+    
+    <bottom>
+        <!-- Control buttons -->
+        <HBox spacing="10">
+            <Button fx:id="generateCommand" onAction="#generateCommand" text="Generate command" />
+            <Button fx:id="start" onAction="#startPandoc" text="Execute!" />
+            <Label fx:id="targetResult" />
+        </HBox>
+    </bottom>
+</BorderPane>
