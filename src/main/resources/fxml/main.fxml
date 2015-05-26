@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 <BorderPane prefHeight="400.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="de.sebastianhesse.pandocgui.MainController">
+            fx:controller="de.sebastianhesse.pandocgui.controller.MainController">
     <stylesheets>
         <URL value="@/css/main.css" />
     </stylesheets>
@@ -36,8 +36,8 @@
 
             <!-- Pandoc command options -->
             <Label text="Your Pandoc command options: " GridPane.rowIndex="4"/>
-            <TextArea fx:id="commandOptions" maxHeight="300" maxWidth="500" prefHeight="300" prefWidth="500"
-                      GridPane.rowIndex="5"/>
+            <TextArea fx:id="commandOptions" maxHeight="300" maxWidth="450" prefHeight="300" prefWidth="450"
+                      GridPane.rowIndex="5" GridPane.columnIndex="0"/>
 
             <!-- Input files -->
             <Label text="Your input files to convert: " GridPane.rowIndex="6" />
@@ -49,14 +49,10 @@
             </HBox>
 
             <!-- Generated command -->
-            <Label text="Your generated command: " GridPane.rowIndex="8" />
-            <TextArea fx:id="generatedCommand" GridPane.rowIndex="9" maxWidth="500" wrapText="true"/>
+            <Label text="Your generated command: " GridPane.rowIndex="8"/>
+            <TextArea fx:id="generatedCommand" GridPane.rowIndex="9" GridPane.columnIndex="0" maxWidth="500" wrapText="true"/>
         </GridPane>
     </center>
-
-    <right>
-        <fx:include source="outputFormats.fxml" />
-    </right>
 
     <bottom>
         <!-- Control buttons -->

@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ToggleGroup?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.*?>
 <GridPane xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1"
-          fx:controller="de.sebastianhesse.pandocgui.FormatController">
+          fx:controller="de.sebastianhesse.pandocgui.controller.FormatController">
 
     <Label text="Input Formats: " GridPane.rowIndex="0"/>
-    <VBox fx:id="vBoxInput" prefWidth="200" GridPane.rowIndex="1">
-        <fx:define>
-            <ToggleGroup fx:id="toggleGroupInputFormats" />
-        </fx:define>
-    </VBox>
+
+    <ComboBox fx:id="inputCombo" prefWidth="200" GridPane.rowIndex="1" onAction="#inputFormatChanged" />
+
+    <Label text="Output Formats: " GridPane.rowIndex="2" />
+
+    <ComboBox fx:id="outputCombo" prefWidth="200" GridPane.rowIndex="3" onAction="#outputFormatChanged" />
 
 </GridPane>

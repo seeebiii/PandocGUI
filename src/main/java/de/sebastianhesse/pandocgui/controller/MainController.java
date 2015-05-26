@@ -1,5 +1,7 @@
-package de.sebastianhesse.pandocgui;
+package de.sebastianhesse.pandocgui.controller;
 
+import de.sebastianhesse.pandocgui.enums.Format;
+import de.sebastianhesse.pandocgui.model.FormatVO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -9,20 +11,25 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * Controller class to control workflow, generate and execute Pandoc command.
  */
 @Controller
-public class MainController {
+public class MainController implements Observer {
 
-    @FXML
+    private static final Logger LOGGER = LoggerFactory.getLogger(MainController.class);
+
     private Stage stage;
     @FXML
     private ListView<File> inputFiles;
@@ -48,7 +55,23 @@ public class MainController {
     private FileChooser inputFilesFileChooser = new FileChooser();
 
     private ObservableList<File> observableFileList = FXCollections.observableArrayList();
+    private String currentInputFormat = "";
+    private String currentOutputFormat = "";
 
+    public void initialize() {
+        this.formatController.addObserver(this);
+    }
+
+    @Override
+    public void update(final Observable observedObject, final Object arg) {
+        LOGGER.debug("received update from observed object...");
+        if (null != arg) {
+            if (observedObject instanceof FormatController && arg instanceof FormatVO) {
+                FormatVO format = (FormatVO) arg;
+                updateFormatInCommandOptions(format.formatType, format.formatValue);
+            }
+        }
+    }
 
     /**
      * Opens a file dialog for location of Pandoc executable. Stores path in {@link #pandocLocation}.
@@ -133,6 +156,34 @@ public class MainController {
             inputFiles.append(file.getPath()).append(" ");
         }
         return inputFiles.toString();
+    }
+
+    private void updateFormatInCommandOptions(final Format format, final String newFormat) {
+        String updatedOptions = this.commandOptions.getText();
+        switch (format) {
+            case INPUT:
+                final String fullInputFormatCommand = " -r " + newFormat;
+                updatedOptions = getUpdatedOptionsForFormat(this.currentInputFormat, updatedOptions, fullInputFormatCommand);
+                this.currentInputFormat = fullInputFormatCommand;
+                break;
+            case OUTPUT:
+                final String fullOutputFormatCommand = " -w " + newFormat;
+                updatedOptions = getUpdatedOptionsForFormat(this.currentOutputFormat, updatedOptions, fullOutputFormatCommand);
+                this.currentOutputFormat = fullOutputFormatCommand;
+                break;
+        }
+        this.commandOptions.setText(updatedOptions);
+    }
+
+    private String getUpdatedOptionsForFormat(final String currentFormat, final String updatedOptions,
+                                              final String fullFormatCommand) {
+        String opts = updatedOptions;
+        if (!currentFormat.isEmpty()) {
+            opts = updatedOptions.replace(currentFormat, fullFormatCommand);
+        } else {
+            opts += fullFormatCommand;
+        }
+        return opts;
     }
 
 }

@@ -1,4 +1,4 @@
-package de.sebastianhesse.pandocgui;
+package de.sebastianhesse.pandocgui.services;
 
 import de.sebastianhesse.pandocgui.interfaces.IFileFormatService;
 import org.springframework.stereotype.Service;
