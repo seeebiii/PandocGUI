@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.*?>
-<?import javafx.geometry.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
+<?import java.net.URL?>
 <BorderPane prefHeight="400.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="de.sebastianhesse.pandocgui.Controller">
+            fx:controller="de.sebastianhesse.pandocgui.MainController">
     <stylesheets>
         <URL value="@/css/main.css" />
     </stylesheets>
@@ -14,6 +13,10 @@
     <padding>
         <Insets bottom="10" left="25" right="25" top="25" />
     </padding>
+    
+    <left>
+        <fx:include source="inputFormats.fxml" />
+    </left>
 
     <center>
         <GridPane>
@@ -41,7 +44,7 @@
             <HBox maxWidth="500" GridPane.rowIndex="7">
                 <ListView fx:id="inputFiles" maxHeight="300" maxWidth="450" prefHeight="300" prefWidth="450"
                           GridPane.columnIndex="0"/>
-                <Button fx:id="selectFiles" onAction="#openInputFilesDialog" text="Open Files..."
+                <Button onAction="#openInputFilesDialog" text="Open Files..."
                         GridPane.columnIndex="1" GridPane.valignment="BOTTOM" />
             </HBox>
 
@@ -50,12 +53,16 @@
             <TextArea fx:id="generatedCommand" GridPane.rowIndex="9" maxWidth="500" wrapText="true"/>
         </GridPane>
     </center>
-    
+
+    <right>
+        <fx:include source="outputFormats.fxml" />
+    </right>
+
     <bottom>
         <!-- Control buttons -->
         <HBox spacing="10">
-            <Button fx:id="generateCommand" onAction="#generateCommand" text="Generate command" />
-            <Button fx:id="start" onAction="#startPandoc" text="Execute!" />
+            <Button onAction="#generateCommand" text="Generate command" />
+            <Button onAction="#startPandoc" text="Execute!" />
             <Label fx:id="targetResult" />
         </HBox>
     </bottom>

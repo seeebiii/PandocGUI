@@ -7,3 +7,6 @@
 .button {
     -fx-font-size: 12pt;
 }
+.radio-button {
+    -fx-font-size: 10pt;
+}

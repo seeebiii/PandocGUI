@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.VBox?>
+<GridPane xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="de.sebastianhesse.pandocgui.FormatController">
+
+    <Label text="Input Formats: " GridPane.rowIndex="0"/>
+    <VBox fx:id="vBoxInput" prefWidth="200" GridPane.rowIndex="1">
+        <fx:define>
+            <ToggleGroup fx:id="toggleGroupInputFormats" />
+        </fx:define>
+    </VBox>
+
+</GridPane>
