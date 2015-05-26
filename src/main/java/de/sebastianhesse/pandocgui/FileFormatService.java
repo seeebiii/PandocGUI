@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * This class provides methods to get the supported input and output formats of Pandoc.
- *
+ * <p>
  * Created by SebastianHesse on 25.05.2015.
  */
 @Service
@@ -69,7 +69,7 @@ public class FileFormatService implements IFileFormatService {
             Process p = Runtime.getRuntime().exec(pandocLocation + " --help");
             BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
             String line;
-            while((line = reader.readLine()) != null) {
+            while ((line = reader.readLine()) != null) {
                 result += line;
             }
         } catch (IOException e) {
