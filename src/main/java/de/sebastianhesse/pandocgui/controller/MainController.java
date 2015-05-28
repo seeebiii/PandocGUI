@@ -19,10 +19,7 @@ import org.springframework.stereotype.Controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Controller class to control workflow, generate and execute Pandoc command.
@@ -192,12 +189,27 @@ public class MainController implements Observer {
     }
 
     private void showDialog(String command) {
-        CommandExecutionDialog dialog = new CommandExecutionDialog(command);
+        CommandExecutionDialog dialog = new CommandExecutionDialog(command, generateShortPathPairs());
         Optional<String> result = dialog.showAndWait();
         if (!result.get().equals("")) {
             this.generatedCommand = result.get();
             startPandoc();
         }
+    }
+
+    private Map<String, String> generateShortPathPairs() {
+        final Map<String, String> result = new HashMap<>();
+        setShortPath(result, this.pandocLocation.getText());
+        setShortPath(result, this.outputFileLocation.getText());
+        for (File fileLocation : this.inputFiles.getItems()) {
+            setShortPath(result, fileLocation.getPath());
+        }
+        return result;
+    }
+
+    private void setShortPath(Map<String, String> pathStore, String longPath) {
+        int lastSlash = longPath.lastIndexOf(File.separator);
+        pathStore.put(longPath.substring(lastSlash + 1), longPath);
     }
 
 }
