@@ -1,5 +1,6 @@
 package de.sebastianhesse.pandocgui.controller;
 
+import de.sebastianhesse.pandocgui.CommandExecutionDialog;
 import de.sebastianhesse.pandocgui.enums.Format;
 import de.sebastianhesse.pandocgui.model.FormatVO;
 import javafx.collections.FXCollections;
@@ -21,6 +22,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Optional;
 
 /**
  * Controller class to control workflow, generate and execute Pandoc command.
@@ -30,6 +32,7 @@ public class MainController implements Observer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MainController.class);
 
+    @FXML
     private Stage stage;
     @FXML
     private ListView<File> inputFiles;
@@ -40,10 +43,7 @@ public class MainController implements Observer {
     @FXML
     private Label targetResult;
     @FXML
-    private TextArea generatedCommand;
-    @FXML
     private TextField outputFileLocation;
-
     @Autowired
     private FormatController formatController;
 
@@ -51,12 +51,14 @@ public class MainController implements Observer {
      * Different FileChooser
      */
     private FileChooser pandocLocationFileChooser = new FileChooser();
+
     private FileChooser outputFileLocationFileChooser = new FileChooser();
     private FileChooser inputFilesFileChooser = new FileChooser();
-
     private ObservableList<File> observableFileList = FXCollections.observableArrayList();
+
     private String currentInputFormat = "";
     private String currentOutputFormat = "";
+    private String generatedCommand;
 
     public void initialize() {
         this.formatController.addObserver(this);
@@ -81,7 +83,11 @@ public class MainController implements Observer {
         File pandocExecutable = this.pandocLocationFileChooser.showOpenDialog(this.stage);
         if (null != pandocExecutable) {
             this.pandocLocation.setText(pandocExecutable.getPath());
-            this.formatController.setPandocLocation(pandocExecutable.getPath());
+            try {
+                this.formatController.setPandocLocation(pandocExecutable.getPath());
+            } catch (Exception e) {
+                this.targetResult.setText("Something went wrong while setting the Pandoc location.");
+            }
         }
     }
 
@@ -116,27 +122,26 @@ public class MainController implements Observer {
      */
     @FXML
     public void generateCommand() {
-        String generatedCommandAsString = this.pandocLocation.getText() + " " +
+        this.generatedCommand = this.pandocLocation.getText() + " " +
                 getCommandOptions() + " -o " + this.outputFileLocation.getText() + " " +
                 getInputFilesAsString();
-        this.generatedCommand.setText(generatedCommandAsString);
+        showDialog(generatedCommand);
     }
 
     /**
-     * Check for empty locations/paths or empty command first. Execute command from {@link #generatedCommand} in new
-     * process and wait for process.
+     * Executes command from {@link #generatedCommand} in new process and wait for process.
+     * Checks for empty locations/paths or empty command first.
      */
-    @FXML
-    public void startPandoc() {
+    private void startPandoc() {
         if (this.pandocLocation.getText().equals("")) {
             this.targetResult.setText("You must specify the Pandoc location.");
         } else if (null == this.inputFiles.getItems() || 0 == this.inputFiles.getItems().size()) {
             this.targetResult.setText("You must specify at least one input file.");
-        } else if (this.generatedCommand.getText().isEmpty()) {
+        } else if (this.generatedCommand.isEmpty()) {
             this.targetResult.setText("You must generate the command first.");
         } else {
             try {
-                Process pandocExec = Runtime.getRuntime().exec(this.generatedCommand.getText());
+                Process pandocExec = Runtime.getRuntime().exec(this.generatedCommand);
                 pandocExec.waitFor();
                 // TODO: read from error stream and show it to user
                 this.targetResult.setText("Process complete.");
@@ -184,6 +189,15 @@ public class MainController implements Observer {
             opts += fullFormatCommand;
         }
         return opts;
+    }
+
+    private void showDialog(String command) {
+        CommandExecutionDialog dialog = new CommandExecutionDialog(command);
+        Optional<String> result = dialog.showAndWait();
+        if (!result.get().equals("")) {
+            this.generatedCommand = result.get();
+            startPandoc();
+        }
     }
 
 }
