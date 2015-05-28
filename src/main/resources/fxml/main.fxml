@@ -22,44 +22,43 @@
         <GridPane>
             <!-- Pandoc executable location -->
             <Label text="Your Pandoc executable location: " GridPane.rowIndex="0" />
-            <HBox maxWidth="500" GridPane.rowIndex="1">
-                <TextField fx:id="pandocLocation" prefWidth="400" GridPane.columnIndex="0"/>
+            <HBox GridPane.rowIndex="1">
+                <TextField fx:id="pandocLocation" prefWidth="650" GridPane.columnIndex="0"/>
                 <Button onAction="#openPandocLocationFileDialog" text="Select" GridPane.columnIndex="1"/>
             </HBox>
 
             <!-- Output file location -->
             <Label text="Your output file location: " GridPane.rowIndex="2" />
-            <HBox maxWidth="500" GridPane.rowIndex="3">
-                <TextField fx:id="outputFileLocation" prefWidth="400" GridPane.columnIndex="0"/>
+            <HBox GridPane.rowIndex="3">
+                <TextField fx:id="outputFileLocation" prefWidth="650" GridPane.columnIndex="0"/>
                 <Button onAction="#openOutputFileLocationFileDialog" text="Select" GridPane.columnIndex="1" />
             </HBox>
 
             <!-- Pandoc command options -->
             <Label text="Your Pandoc command options: " GridPane.rowIndex="4"/>
-            <TextArea fx:id="commandOptions" maxHeight="300" maxWidth="450" prefHeight="300" prefWidth="450"
+            <TextArea fx:id="commandOptions" prefHeight="150" prefWidth="650"
                       GridPane.rowIndex="5" GridPane.columnIndex="0"/>
 
             <!-- Input files -->
             <Label text="Your input files to convert: " GridPane.rowIndex="6" />
-            <HBox maxWidth="500" GridPane.rowIndex="7">
-                <ListView fx:id="inputFiles" maxHeight="300" maxWidth="450" prefHeight="300" prefWidth="450"
+            <HBox GridPane.rowIndex="7">
+                <ListView fx:id="inputFiles" prefHeight="200" prefWidth="650"
                           GridPane.columnIndex="0"/>
                 <Button onAction="#openInputFilesDialog" text="Open Files..."
                         GridPane.columnIndex="1" GridPane.valignment="BOTTOM" />
             </HBox>
-
-            <!-- Generated command -->
-            <Label text="Your generated command: " GridPane.rowIndex="8"/>
-            <TextArea fx:id="generatedCommand" GridPane.rowIndex="9" GridPane.columnIndex="0" maxWidth="500" wrapText="true"/>
         </GridPane>
     </center>
 
     <bottom>
         <!-- Control buttons -->
-        <HBox spacing="10">
-            <Button onAction="#generateCommand" text="Generate command" />
-            <Button onAction="#startPandoc" text="Execute!" />
+        <HBox spacing="10" alignment="CENTER_RIGHT">
+            <padding>
+                <Insets bottom="10" left="25" right="25" top="25" />
+            </padding>
+
             <Label fx:id="targetResult" />
+            <Button onAction="#generateCommand" text="Generate command" />
         </HBox>
     </bottom>
 </BorderPane>
