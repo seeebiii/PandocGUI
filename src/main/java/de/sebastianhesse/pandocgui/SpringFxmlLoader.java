@@ -2,7 +2,9 @@ package de.sebastianhesse.pandocgui;
 
 import javafx.fxml.FXMLLoader;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,13 +17,11 @@ import java.net.URL;
  *
  * Created by SebastianHesse on 25.05.2015.
  */
+@Service
 public class SpringFxmlLoader {
 
+    @Autowired
     private ApplicationContext context;
-
-    public SpringFxmlLoader(ApplicationContext appContext) {
-        this.context = appContext;
-    }
 
     /**
      * Loads the root FXML file and uses Spring's context to get controllers.

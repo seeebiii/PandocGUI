@@ -13,9 +13,11 @@ public class Main extends Application {
         AnnotationConfigApplicationContext context
                 = new AnnotationConfigApplicationContext(AppConfiguration.class);
 
-        SpringFxmlLoader loader = new SpringFxmlLoader(context);
+        context.getBeanFactory().registerResolvableDependency(Stage.class, primaryStage);
+
+        SpringFxmlLoader loader = context.getBean(SpringFxmlLoader.class);
         Parent parent = (Parent) loader.load("/fxml/main.fxml");
-        primaryStage.setScene(new Scene(parent, 1000, 900));
+        primaryStage.setScene(new Scene(parent, 1000, 600));
         primaryStage.setTitle("PandocGUI");
         primaryStage.show();
     }
