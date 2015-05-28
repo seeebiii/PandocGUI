@@ -5,7 +5,7 @@ This project provides a GUI for [Pandoc](https://github.com/jgm/pandoc) by using
 Sebastian Hesse
 
 # Technologies
-Java, JavaFX, CSS, Maven
+Java, JavaFX, Spring, CSS, Maven
 
 # Usage
 1. You can download the source code, compile the files and run the `Main` class. 
