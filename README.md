@@ -20,9 +20,9 @@ Java, JavaFX, Spring, CSS, Maven
 - Allow to change ordering of input files
 - Don't allow duplicate input files
 - Print out Pandoc's output if available
-- Show generated command in popup window
 - Know the last viewed directory for all file dialogs
 - Open output file or directory after successful conversion
+- Internationalization
 
 # License
 The MIT License (MIT)
