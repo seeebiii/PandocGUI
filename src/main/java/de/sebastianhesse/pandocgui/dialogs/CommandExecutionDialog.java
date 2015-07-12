@@ -1,4 +1,4 @@
-package de.sebastianhesse.pandocgui;
+package de.sebastianhesse.pandocgui.dialogs;
 
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;

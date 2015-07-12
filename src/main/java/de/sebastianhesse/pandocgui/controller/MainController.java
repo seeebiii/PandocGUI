@@ -1,7 +1,8 @@
 package de.sebastianhesse.pandocgui.controller;
 
-import de.sebastianhesse.pandocgui.CommandExecutionDialog;
+import de.sebastianhesse.pandocgui.dialogs.CommandExecutionDialog;
 import de.sebastianhesse.pandocgui.enums.Format;
+import de.sebastianhesse.pandocgui.interfaces.IPandocExecutionService;
 import de.sebastianhesse.pandocgui.model.FormatVO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.*;
 
 /**
@@ -43,6 +43,8 @@ public class MainController implements Observer {
     private TextField outputFileLocation;
     @Autowired
     private FormatController formatController;
+    @Autowired
+    private IPandocExecutionService executionService;
 
     /**
      * Different FileChooser
@@ -137,14 +139,7 @@ public class MainController implements Observer {
         } else if (this.generatedCommand.isEmpty()) {
             this.targetResult.setText("You must generate the command first.");
         } else {
-            try {
-                Process pandocExec = Runtime.getRuntime().exec(this.generatedCommand);
-                pandocExec.waitFor();
-                // TODO: read from error stream and show it to user
-                this.targetResult.setText("Process complete.");
-            } catch (IOException | InterruptedException e) {
-                this.targetResult.setText("Process failed. Please check your input.");
-            }
+            this.executionService.executeCommand(this.generatedCommand, this.targetResult);
         }
     }
 
@@ -188,7 +183,7 @@ public class MainController implements Observer {
         return opts;
     }
 
-    private void showDialog(String command) {
+    private void showDialog(final String command) {
         CommandExecutionDialog dialog = new CommandExecutionDialog(command, generateShortPathPairs());
         Optional<String> result = dialog.showAndWait();
         if (!result.get().equals("")) {
@@ -207,7 +202,7 @@ public class MainController implements Observer {
         return result;
     }
 
-    private void setShortPath(Map<String, String> pathStore, String longPath) {
+    private void setShortPath(final Map<String, String> pathStore, final String longPath) {
         int lastSlash = longPath.lastIndexOf(File.separator);
         pathStore.put(longPath.substring(lastSlash + 1), longPath);
     }
